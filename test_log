@@ -1,0 +1,10 @@
+test_ping_failure (test_run.TestNetworkTools) ... ok
+test_ping_success (test_run.TestNetworkTools) ... ok
+test_traceroute_failure (test_run.TestNetworkTools) ... ok
+test_traceroute_success (test_run.TestNetworkTools) ... ok
+test_validate_domain (test_run.TestNetworkTools) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.003s
+
+OK
