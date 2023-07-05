@@ -20,25 +20,50 @@ def validate_domain(domain):
     return re.match(pattern, domain) is not None
 
 def run():
-    # Get the user input
-    domains = input("Digite o domínio (separar por vírgula em caso de mais de um): ").split(',')
-    
-    for domain in domains:
-        domain = domain.strip()
-        # Validate the domain input
-        if validate_domain(domain):
-            # Call function with error handling and timeout of 5 seconds
-            try:
-                ping(domain, timeout=5)
-            except Exception as e:
-                print(f'Ping to {domain} failed: {e}')
+    while True:
+        print("Network Tools")
+        print("1 - Ping")
+        print("2 - Traceroute")
+        print("0 - Sair")
 
-            try:
-                traceroute(domain, timeout=5)
-            except Exception as e:
-                print(f'Traceroute to {domain} failed: {e}')
+        opcao = input("Digite uma opção: ")
+
+        if opcao == '0':
+            print("Encerrando ...")
+            break
+        elif opcao == '1':
+            # Get the user input
+            domains = input("Digite o domínio (separar por vírgula em caso de mais de um): ").split(',')
+            
+            for domain in domains:
+                domain = domain.strip()
+                # Validate the domain input
+                if validate_domain(domain):
+                    # Call function with error handling and timeout of 5 seconds
+                    try:
+                        ping(domain, timeout=5)
+                    except Exception as e:
+                        print(f'Ping to {domain} failed: {e}')
+                else:
+                    print("Domínio inválido. Entre um domínio válido.")
+                    
+        elif opcao == '2':
+            # Get the user input
+            domains = input("Digite o domínio (separar por vírgula em caso de mais de um): ").split(',')
+            
+            for domain in domains:
+                domain = domain.strip()
+                # Validate the domain input
+                if validate_domain(domain):
+                    # Call function with error handling and timeout of 5 seconds
+                    try:
+                        traceroute(domain, timeout=5)
+                    except Exception as e:
+                        print(f'Traceroute to {domain} failed: {e}')
+                else:
+                    print("Domínio inválido. Entre um domínio válido.")
         else:
-            print("Domínio inválido. Entre um domínio válido.")
+            print("Opçao inválida. Por favor, selecione uma nova opção.")
 
 if __name__ == '__main__':
     run()
