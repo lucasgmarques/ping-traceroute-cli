@@ -1,16 +1,16 @@
 import subprocess
 import re
 
-def ping(host):
+def ping(host, timeout=None):
     try:
-        output = subprocess.check_output(['ping', '-c', '4', host])
+        output = subprocess.check_output(['ping', '-c', '4', '-W', str(timeout), host])
         print(output.decode('utf-8'))
     except subprocess.CalledProcessError as e:
         raise Exception(f'Ping to {host} failed: {e}')
 
-def traceroute(host):
+def traceroute(host, timeout=None):
     try:
-        output = subprocess.check_output(['traceroute', host])
+        output = subprocess.check_output(['traceroute', '-w', str(timeout), host])
         print(output.decode('utf-8'))
     except subprocess.CalledProcessError as e:
         raise Exception(f'Traceroute to {host} failed: {e}')
@@ -21,22 +21,24 @@ def validate_domain(domain):
 
 def run():
     # Get the user input
-    domain = input("Digite o domínio: ")
+    domains = input("Digite o domínio (separar por vírgula em caso de mais de um): ").split(',')
     
-    # Validate the domain input
-    if validate_domain(domain):
-        # Call function with error handling
-        try:
-            ping(domain)
-        except Exception as e:
-            print(f'Ping to {domain} failed: {e}')
+    for domain in domains:
+        domain = domain.strip()
+        # Validate the domain input
+        if validate_domain(domain):
+            # Call function with error handling and timeout of 5 seconds
+            try:
+                ping(domain, timeout=5)
+            except Exception as e:
+                print(f'Ping to {domain} failed: {e}')
 
-        try:
-            traceroute(domain)
-        except Exception as e:
-            print(f'Traceroute to {domain} failed: {e}')
-    else:
-        print("Domínio inválido. Entre um domínio válido.")
+            try:
+                traceroute(domain, timeout=5)
+            except Exception as e:
+                print(f'Traceroute to {domain} failed: {e}')
+        else:
+            print("Domínio inválido. Entre um domínio válido.")
 
 if __name__ == '__main__':
     run()
